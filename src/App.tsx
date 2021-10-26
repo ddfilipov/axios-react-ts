@@ -34,6 +34,15 @@ export default function App() {
       });
   }
 
+  function deletePost() {
+    axios
+      .delete(`${baseURL}/1`)
+      .then(() => {
+        alert("Post deleted!");
+        setPost(null)
+      });
+  }
+
   if (!post) return <p>There are no more posts</p>
 
   return (
@@ -42,6 +51,7 @@ export default function App() {
       <p>{post.body}</p>
       <button onClick={createPost}>Create Post</button>
       <button onClick={updatePost}>Update Post</button>
+      <button onClick={deletePost}>Delete Post</button>
     </div>
   );
 }
