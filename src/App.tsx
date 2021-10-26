@@ -1,7 +1,9 @@
 import axios from "axios";
 import React from "react";
 
-const baseURL = "https://jsonplaceholder.typicode.com/posts";
+const client = axios.create({
+  baseURL: "https://jsonplaceholder.typicode.com/posts" 
+});
 
 export default function App() {
   const [post, setPost] = React.useState<any>(null);
@@ -9,7 +11,7 @@ export default function App() {
 
   // add a random text after the /1 in useEffect() to make the app get an error
   React.useEffect(() => {
-    axios.get(`${baseURL}/1`).then((response) => {
+    client.get("/1").then((response) => {
       setPost(response.data);
     }).catch(error => {
       setError(error);
@@ -17,8 +19,8 @@ export default function App() {
   }, []);
 
   function createPost() {
-    axios
-      .post(baseURL, {
+    client
+      .post("/", {
         title: "Hello World!",
         body: "This is a new post."
       })
@@ -28,8 +30,8 @@ export default function App() {
   }
 
   function updatePost() {
-    axios
-      .put(`${baseURL}/1`, {
+    client
+      .put("/1", {
         title: "Hello World!",
         body: "This is an updated post."
       })
@@ -39,8 +41,8 @@ export default function App() {
   }
 
   function deletePost() {
-    axios
-      .delete(`${baseURL}/1`)
+    client
+      .delete("/1")
       .then(() => {
         alert("Post deleted!");
         setPost(null)
