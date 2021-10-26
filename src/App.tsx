@@ -5,11 +5,15 @@ const baseURL = "https://jsonplaceholder.typicode.com/posts";
 
 export default function App() {
   const [post, setPost] = React.useState<any>(null);
+  const [error, setError] = React.useState<any>(null);
 
+  // add a random text after the /1 in useEffect() to make the app get an error
   React.useEffect(() => {
     axios.get(`${baseURL}/1`).then((response) => {
       setPost(response.data);
-    });
+    }).catch(error => {
+      setError(error);
+    })
   }, []);
 
   function createPost() {
@@ -43,6 +47,7 @@ export default function App() {
       });
   }
 
+  if (error) return <p>Error: {error.message}</p>;
   if (!post) return <p>There are no more posts</p>
 
   return (
