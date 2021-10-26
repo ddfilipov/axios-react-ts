@@ -23,6 +23,17 @@ export default function App() {
       });
   }
 
+  function updatePost() {
+    axios
+      .put(`${baseURL}/1`, {
+        title: "Hello World!",
+        body: "This is an updated post."
+      })
+      .then((response) => {
+        setPost(response.data);
+      });
+  }
+
   if (!post) return <p>There are no more posts</p>
 
   return (
@@ -30,6 +41,7 @@ export default function App() {
       <h1>{post.title}</h1>
       <p>{post.body}</p>
       <button onClick={createPost}>Create Post</button>
+      <button onClick={updatePost}>Update Post</button>
     </div>
   );
 }
