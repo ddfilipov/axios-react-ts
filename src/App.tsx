@@ -7,49 +7,36 @@ const client = axios.create({
 
 export default function App() {
   const [post, setPost] = React.useState<any>(null);
-  const [error, setError] = React.useState<any>(null);
-
-  // add a random text after the /1 in useEffect() to make the app get an error
   React.useEffect(() => {
-    client.get("/1").then((response) => {
+    async function getPost(){
+      const response = await client.get("/1");
       setPost(response.data);
-    }).catch(error => {
-      setError(error);
-    })
+    }
+    getPost();
   }, []);
 
-  function createPost() {
-    client
-      .post("/", {
-        title: "Hello World!",
-        body: "This is a new post."
-      })
-      .then((response) => {
-        setPost(response.data);
-      });
+  async function createPost() {
+    const response = await client.post("/",{
+      title: "Hello World!",
+      body: "This is a new post."
+    });
+    setPost(response.data);
   }
 
-  function updatePost() {
-    client
-      .put("/1", {
-        title: "Hello World!",
-        body: "This is an updated post."
-      })
-      .then((response) => {
-        setPost(response.data);
-      });
+  async function updatePost() {
+    const response = await client.put("/1",{
+      title: "Hello World!",
+      body: "This is an updated post."
+    });
+    setPost(response.data);
   }
 
-  function deletePost() {
-    client
-      .delete("/1")
-      .then(() => {
-        alert("Post deleted!");
-        setPost(null)
-      });
+  async function deletePost() {
+    await client.delete("/1");
+      alert("Post deleted!");
+      setPost(null)
   }
 
-  if (error) return <p>Error: {error.message}</p>;
   if (!post) return <p>There are no more posts</p>
 
   return (
